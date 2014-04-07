@@ -7,7 +7,7 @@
         <version>7</version>
     </parent>
 -->
-    <groupId>org.alembic.aurion</groupId>
+    <groupId>org.aurionproject</groupId>
     <artifactId>Webservices</artifactId>
     <version>5.0.0</version>
     <modelVersion>4.0.0</modelVersion>
@@ -63,7 +63,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-            <groupId>org.alembic.aurion</groupId>
+            <groupId>org.aurionproject</groupId>
             <artifactId>AurionCommonTypesLib</artifactId>
             <version>5.0.0</version>
             <type>jar</type>
@@ -73,7 +73,7 @@
 
     <dependencies>
          <dependency>
-            <groupId>org.alembic.aurion</groupId>
+            <groupId>org.aurionproject</groupId>
             <artifactId>AurionCommonTypesLib</artifactId>
             <version>5.0.0</version>
         </dependency> 
@@ -139,7 +139,7 @@
                             <artifactItems>
                                 <artifactItem>
                                     <!-- Artifact that Holds our custom templates -->
-                                    <groupId>org.alembic.aurion</groupId>
+                                    <groupId>org.aurionproject</groupId>
                                     <artifactId>AurionCommonTypesLib</artifactId>
                                     <type>jar</type>
                                 </artifactItem>
