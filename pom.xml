@@ -9,7 +9,7 @@
 -->
     <groupId>org.aurionproject</groupId>
     <artifactId>Webservices</artifactId>
-    <version>5.0.0</version>
+    <version>5.0</version>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <name>Aurion Web services</name>
@@ -65,7 +65,7 @@
             <dependency>
             <groupId>org.aurionproject</groupId>
             <artifactId>AurionCommonTypesLib</artifactId>
-            <version>5.0.0</version>
+            <version>5.0</version>
             <type>jar</type>
         </dependency> 
     </dependencies>
@@ -75,7 +75,7 @@
          <dependency>
             <groupId>org.aurionproject</groupId>
             <artifactId>AurionCommonTypesLib</artifactId>
-            <version>5.0.0</version>
+            <version>5.0</version>
         </dependency> 
     </dependencies>
     <build>
