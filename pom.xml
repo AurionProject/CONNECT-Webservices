@@ -63,20 +63,20 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-            <groupId>org.aurionproject</groupId>
-            <artifactId>AurionCommonTypesLib</artifactId>
-            <version>5.0</version>
-            <type>jar</type>
-        </dependency> 
-    </dependencies>
-</dependencyManagement>
+                <groupId>org.aurionproject</groupId>
+                <artifactId>AurionCommonTypesLib</artifactId>
+                <version>5.0</version>
+                <type>jar</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
-         <dependency>
+        <dependency>
             <groupId>org.aurionproject</groupId>
             <artifactId>AurionCommonTypesLib</artifactId>
             <version>5.0</version>
-        </dependency> 
+        </dependency>
     </dependencies>
 
     <build>
