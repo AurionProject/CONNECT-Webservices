@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:tns="urn:gov:hhs:fha:nhinc:entitypatientdiscoverysecured" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:hl7="urn:hl7-org:v3" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sc="http://schemas.sun.com/2006/03/wss/server" xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" name="EntityPatientDiscoverySecured" targetNamespace="urn:gov:hhs:fha:nhinc:entitypatientdiscoverysecured">
+<wsdl:definitions xmlns:tns="urn:gov:hhs:fha:nhinc:entitypatientdiscoverysecured" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:hl7="urn:hl7-org:v3" xmlns:ihe="urn:ihe:iti:xcpd:2009" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sc="http://schemas.sun.com/2006/03/wss/server" xmlns:wspp="http://java.sun.com/xml/ns/wsit/policy" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" name="EntityPatientDiscoverySecured" targetNamespace="urn:gov:hhs:fha:nhinc:entitypatientdiscoverysecured">
     <wsdl:documentation>
      WSDL for Entity interface of Patient Discovery
     </wsdl:documentation>
@@ -9,6 +9,9 @@
             <xsd:include schemaLocation="classpath:schemas/nhinc/hl7/RespondingGateway_PRPA_IN201305UV02Request.xsd"/>
             <xsd:include schemaLocation="classpath:schemas/nhinc/hl7/RespondingGateway_PRPA_IN201306UV02Response.xsd"/>
         </xsd:schema>
+		<xsd:schema elementFormDefault="qualified" targetNamespace="urn:ihe:iti:xcpd:2009">
+			<xsd:include schemaLocation="classpath:schemas/ihe/RespondingGateway_PatientLocationQuery.xsd"/>
+		</xsd:schema>
     </wsdl:types>
     <wsdl:message name="RespondingGateway_PRPA_IN201305UV02RequestMessage">
         <wsdl:part name="RespondingGateway_PRPA_IN201305UV02Request" element="hl7:RespondingGateway_PRPA_IN201305UV02Request"/>
@@ -16,6 +19,12 @@
     <wsdl:message name="RespondingGateway_PRPA_IN201306UV02ResponseMessage">
         <wsdl:part name="RespondingGateway_PRPA_IN201306UV02Response" element="hl7:RespondingGateway_PRPA_IN201306UV02Response"/>
     </wsdl:message>
+	<wsdl:message name="RespondingGateway_PatientLocationQueryRequestMessage"> 
+    	<wsdl:part name="RespondingGateway_PatientLocationQueryRequest" element="ihe:RespondingGateway_PatientLocationQueryRequest"/>
+  	</wsdl:message> 
+  	<wsdl:message name="PatientLocationQueryResponseMessage"> 
+    	<wsdl:part name="PatientLocationQueryResponse" element="ihe:PatientLocationQueryResponse"/> 
+  	</wsdl:message>
     <wsdl:portType name="EntityPatientDiscoverySecuredPortType">
         <wsdl:operation name="RespondingGateway_PRPA_IN201305UV02">
             <wsdl:input name="RespondingGateway_PRPA_IN201305UV02Request" message="tns:RespondingGateway_PRPA_IN201305UV02RequestMessage"
@@ -23,6 +32,12 @@
             <wsdl:output name="RespondingGateway_PRPA_IN201306UV02Response" message="tns:RespondingGateway_PRPA_IN201306UV02ResponseMessage"
                         wsaw:Action="urn:gov:hhs:fha:nhinc:entitypatientdiscoverysecured:RespondingGateway_PRPA_IN201306UV02ResponseMessage"/>
         </wsdl:operation>
+		<wsdl:operation name="RespondingGateway_PatientLocationQuery">
+			<wsdl:input name="RespondingGateway_PatientLocationQueryRequest" message="tns:RespondingGateway_PatientLocationQueryRequestMessage"
+                        wsaw:Action="urn:gov:hhs:fha:nhinc:entitypatientdiscoverysecured:RespondingGateway_PatientLocationQueryRequestMessage"/>
+			<wsdl:output name="PatientLocationQueryResponse" message="tns:PatientLocationQueryResponseMessage"
+                        wsaw:Action="urn:gov:hhs:fha:nhinc:entitypatientdiscoverysecured:PatientLocationQueryResponseMessage"/>
+		</wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="EntityPatientDiscoverySecuredBindingSoap" type="tns:EntityPatientDiscoverySecuredPortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -38,6 +53,15 @@
                 <wsp:PolicyReference URI="#Entity_PatientDiscovery_Binding_Soap_Output_Policy"/>
             </wsdl:output>
         </wsdl:operation>
+		<wsdl:operation name="RespondingGateway_PatientLocationQuery">
+			<soap:operation soapAction="urn:gov:hhs:fha:nhinc:entitypatientdiscoverysecured:RespondingGateway_PatientLocationQueryRequestMessage"/>
+      	<wsdl:input name="RespondingGateway_PatientLocationQueryRequest">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="PatientLocationQueryResponse">
+				<soap:body use="literal"/>
+			</wsdl:output> 
+    	</wsdl:operation>
     </wsdl:binding>
     <wsdl:service name="EntityPatientDiscoverySecured">
         <wsdl:port name="EntityPatientDiscoverySecuredPortSoap" binding="tns:EntityPatientDiscoverySecuredBindingSoap">

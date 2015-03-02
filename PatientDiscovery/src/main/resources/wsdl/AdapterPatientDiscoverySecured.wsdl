@@ -6,6 +6,7 @@
                   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xmlns:hl7="urn:hl7-org:v3"
+                  xmlns:ihe="urn:ihe:iti:xcpd:2009"
                   xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
                   xmlns:nccommonadapter="urn:gov:hhs:fha:nhinc:common:nhinccommonadapter"
                   xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
@@ -28,6 +29,12 @@
         <xsd:schema targetNamespace="urn:gov:hhs:fha:nhinc:adapterpatientdiscoverysecured">
             <xsd:import schemaLocation="classpath:schemas/nhin/PatientDiscoveryFault.xsd" namespace="http://www.hhs.gov/healthit/nhin"/>
         </xsd:schema>
+		<xsd:schema elementFormDefault="qualified" targetNamespace="urn:ihe:iti:xcpd:2009">
+			<xsd:include schemaLocation="classpath:schemas/ihe/RespondingGateway_PatientLocationQuery.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="urn:gov:hhs:fha:nhinc:adaptermpi">
+            <xsd:import schemaLocation="classpath:schemas/nhin/PatientLocationQueryFault.xsd" namespace="http://www.hhs.gov/healthit/nhin"/>
+        </xsd:schema>
     </wsdl:types>
     <wsdl:message name="RespondingGateway_PRPA_IN201305UV02RequestSecuredMessage">
         <wsdl:part name="RespondingGateway_PRPA_IN201305UV02Request" element="hl7:RespondingGateway_PRPA_IN201305UV02Request"/>
@@ -38,12 +45,26 @@
     <wsdl:message name="AdapterPatientDiscoverySecuredFault">
         <wsdl:part name="PatientDiscoveryFault" element="nhin:PatientDiscoveryFault"/>
     </wsdl:message>
+	<wsdl:message name="RespondingGateway_PatientLocationQueryRequestSecuredMessage"> 
+    	<wsdl:part name="RespondingGateway_PatientLocationQueryRequest" element="ihe:RespondingGateway_PatientLocationQueryRequest"/>
+  	</wsdl:message> 
+  	<wsdl:message name="PatientLocationQueryResponseMessage"> 
+    	<wsdl:part name="PatientLocationQueryResponse" element="ihe:PatientLocationQueryResponse"/> 
+  	</wsdl:message>
+	<wsdl:message name="PatientLocationQuery_Fault">
+        <wsdl:part name="PatientLocationQueryFault" element="nhin:PatientLocationQueryFault"/>
+    </wsdl:message>
     <wsdl:portType name="AdapterPatientDiscoverySecuredPortType">
         <wsdl:operation name="RespondingGateway_PRPA_IN201305UV02">
             <wsdl:input name="RespondingGateway_PRPA_IN201305UV02RequestSecured" message="tns:RespondingGateway_PRPA_IN201305UV02RequestSecuredMessage"/>
             <wsdl:output name="RespondingGateway_PRPA_IN201306UV02ResponseSecured" message="tns:RespondingGateway_PRPA_IN201306UV02ResponseSecuredMessage"/>
             <wsdl:fault name="AdapterPatientDiscoverySecuredFault" message="tns:AdapterPatientDiscoverySecuredFault"/>
         </wsdl:operation>
+		  <wsdl:operation name="RespondingGateway_PatientLocationQuery">
+			<wsdl:input name="RespondingGateway_PatientLocationQueryRequestSecured" message="tns:RespondingGateway_PatientLocationQueryRequestSecuredMessage" />
+			<wsdl:output name="PatientLocationQueryResponse" message="tns:PatientLocationQueryResponseMessage" />
+			<wsdl:fault name="PatientLocationQuery_Fault" message="tns:PatientLocationQuery_Fault"/>
+		</wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="AdapterPatientDiscoverySecuredBindingSoap" type="tns:AdapterPatientDiscoverySecuredPortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -63,6 +84,19 @@
                 <wsp:PolicyReference URI="#Adapter_PatientDiscovery_Output_Policy"/>
             </wsdl:fault>
         </wsdl:operation>
+		  <wsdl:operation name="RespondingGateway_PatientLocationQuery">
+			<soap:operation 
+				soapAction="urn:RespondingGateway_PatientLocationQuery"/>
+      	<wsdl:input name="RespondingGateway_PatientLocationQueryRequestSecured">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="PatientLocationQueryResponse">
+				<soap:body use="literal"/>
+			</wsdl:output> 
+			<wsdl:fault name="PatientLocationQuery_Fault">
+                <soap:fault name="PatientLocationQuery_Fault" use="literal"/>
+	    </wsdl:fault>
+    	</wsdl:operation>
     </wsdl:binding>
     <wsdl:service name="AdapterPatientDiscoverySecured">
         <wsdl:port name="AdapterPatientDiscoverySecuredPortSoap" binding="tns:AdapterPatientDiscoverySecuredBindingSoap">

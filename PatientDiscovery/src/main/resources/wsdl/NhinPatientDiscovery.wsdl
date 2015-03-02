@@ -26,7 +26,14 @@
             <xsd:include schemaLocation="classpath:schemas/HL7V3/NE2008/multicacheschemas/PRPA_IN201306UV02.xsd"/>
         </xsd:schema>
         <xsd:schema targetNamespace="urn:gov:hhs:fha:nhinc:adaptermpi">
-             <xsd:import schemaLocation="classpath:schemas/nhin/PatientDiscoveryFault.xsd" namespace="http://www.hhs.gov/healthit/nhin"/>
+            <xsd:import schemaLocation="classpath:schemas/nhin/PatientDiscoveryFault.xsd" namespace="http://www.hhs.gov/healthit/nhin"/>
+        </xsd:schema>
+	<xsd:schema elementFormDefault="qualified" targetNamespace="urn:ihe:iti:xcpd:2009">
+	    <!-- Include the XCPD Patient Location Query message schema -->
+	    <xsd:include schemaLocation="../schemas/ihe/XCPD_PLQ.xsd"/>
+	</xsd:schema>
+	<xsd:schema targetNamespace="urn:gov:hhs:fha:nhinc:adaptermpi">
+            <xsd:import schemaLocation="classpath:schemas/nhin/PatientLocationQueryFault.xsd" namespace="http://www.hhs.gov/healthit/nhin"/>
         </xsd:schema>
     </wsdl:types>
     <wsdl:message name="PRPA_IN201305UV02_Message">
@@ -38,12 +45,28 @@
     <wsdl:message name="PRPA_IN201305UV02_Fault">
         <wsdl:part name="PatientDiscoveryFault" element="nhin:PatientDiscoveryFault"/>
     </wsdl:message>
+    <!-- Defines the two Patient Location Query message elements -->
+    <wsdl:message name="PatientLocationQuery_Message">
+        <wsdl:part name="body" element="tns:PatientLocationQueryRequest"/>
+    </wsdl:message>
+    <wsdl:message name="PatientLocationQueryResponse_Message">
+        <wsdl:part name="body" element="tns:PatientLocationQueryResponse"/>
+    </wsdl:message>
+    <wsdl:message name="PatientLocationQuery_Fault">
+        <wsdl:part name="PatientLocationQueryFault" element="nhin:PatientLocationQueryFault"/>
+    </wsdl:message>
     <wsdl:portType name="RespondingGateway_PortType">
         <wsdl:operation name="RespondingGateway_PRPA_IN201305UV02">
             <wsdl:input message="tns:PRPA_IN201305UV02_Message" wsaw:Action="urn:hl7-org:v3:PRPA_IN201305UV02:CrossGatewayPatientDiscovery"/>
             <wsdl:output message="tns:PRPA_IN201306UV02_Message" wsaw:Action="urn:hl7-org:v3:PRPA_IN201306UV02:CrossGatewayPatientDiscovery"/>
             <wsdl:fault name="PRPA_IN201305UV02_Fault" message="tns:PRPA_IN201305UV02_Fault"/>
         </wsdl:operation>
+	<!-- Defines the Patient Location Query operation -->
+	<wsdl:operation name="RespondingGateway_PatientLocationQuery">
+	    <wsdl:input message="tns:PatientLocationQuery_Message" wsaw:Action="urn:ihe:iti:2009:PatientLocationQuery"/>
+	    <wsdl:output message="tns:PatientLocationQueryResponse_Message" wsaw:Action="urn:ihe:iti:2009:PatientLocationQueryResponse"/>
+	    <wsdl:fault name="PatientLocationQuery_Fault" message="tns:PatientLocationQuery_Fault"/>
+	</wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="RespondingGateway_Binding_Soap" type="tns:RespondingGateway_PortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -63,6 +86,21 @@
             <wsp:PolicyReference URI="#RespondingGateway_Binding_Soap_Output_Policy"/>
             </wsdl:fault>
         </wsdl:operation>
+	<wsdl:operation name="RespondingGateway_PatientLocationQuery">
+	    <soap:operation soapAction="urn:ihe:iti:2009:PatientLocationQuery"/>
+	    <wsdl:input>
+	        <soap:body use="literal"/>
+	        <wsp:PolicyReference URI="#RespondingGateway_Binding_Soap_Input_Policy"/>
+	    </wsdl:input>
+	    <wsdl:output>
+	        <soap:body use="literal"/>
+	        <wsp:PolicyReference URI="#RespondingGateway_Binding_Soap_Output_Policy"/>
+	    </wsdl:output>
+            <wsdl:fault name="PatientLocationQuery_Fault">
+                <soap:fault name="PatientLocationQuery_Fault" use="literal"/>
+                <wsp:PolicyReference URI="#RespondingGateway_Binding_Soap_Output_Policy"/>
+	    </wsdl:fault>
+	</wsdl:operation>
     </wsdl:binding>
     <wsdl:service name="RespondingGateway_Service">
         <wsdl:port name="RespondingGateway_Port_Soap" binding="tns:RespondingGateway_Binding_Soap">
